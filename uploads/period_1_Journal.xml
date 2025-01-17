@@ -1,0 +1,159 @@
+<Journal>
+    <Header>
+        <organizationIdentifier>XYZ A.Ş.</organizationIdentifier>
+        <businessDescription>62.02.01</businessDescription>
+        <fiscalYearStart>2024-01-01</fiscalYearStart>
+        <fiscalYearEnd>2024-12-31</fiscalYearEnd>
+        <periodCoveredStart>2024-01-01</periodCoveredStart>
+        <periodCoveredEnd>2024-01-31</periodCoveredEnd>
+        <creationDate>2025-01-08</creationDate>
+        <enteredBy>Ali Veli</enteredBy>
+    </Header>
+    
+    <!-- Sermaye Artışı (Nakit) -->
+    <Entry>
+        <entryNumber>000001</entryNumber>
+        <enteredDate>2024-01-02</enteredDate>
+        <documentType>receipt</documentType>
+        <documentNumber>SPY123456</documentNumber>
+        <documentDate>2024-01-02</documentDate>
+        <line>
+            <accountCode>102</accountCode>
+            <description>Banka Hesapları</description>
+            <debitAmount>50,000.00</debitAmount>
+            <creditAmount>0.00</creditAmount>
+        </line>
+        <line>
+            <accountCode>500</accountCode>
+            <description>Sermaye</description>
+            <debitAmount>0.00</debitAmount>
+            <creditAmount>50,000.00</creditAmount>
+        </line>
+    </Entry>
+    
+    <!-- Kira Ödemesi -->
+    <Entry>
+        <entryNumber>000002</entryNumber>
+        <enteredDate>2024-01-05</enteredDate>
+        <documentType>voucher</documentType>
+        <documentNumber>KIRA98765</documentNumber>
+        <documentDate>2024-01-05</documentDate>
+        <line>
+            <accountCode>770</accountCode>
+            <description>Genel Yönetim Giderleri</description>
+            <debitAmount>15,000.00</debitAmount>
+            <creditAmount>0.00</creditAmount>
+        </line>
+        <line>
+            <accountCode>102</accountCode>
+            <description>Banka Hesapları</description>
+            <debitAmount>0.00</debitAmount>
+            <creditAmount>15,000.00</creditAmount>
+        </line>
+    </Entry>
+    
+    <!-- Kasadan Mal Alışı -->
+    <Entry>
+        <entryNumber>000003</entryNumber>
+        <enteredDate>2024-01-10</enteredDate>
+        <documentType>invoice</documentType>
+        <documentNumber>MAL123456</documentNumber>
+        <documentDate>2024-01-10</documentDate>
+        <line>
+            <accountCode>153</accountCode>
+            <description>Ticari Mallar</description>
+            <debitAmount>20,000.00</debitAmount>
+            <creditAmount>0.00</creditAmount>
+        </line>
+        <line>
+            <accountCode>100</accountCode>
+            <description>Kasa</description>
+            <debitAmount>0.00</debitAmount>
+            <creditAmount>20,000.00</creditAmount>
+        </line>
+    </Entry>
+    
+    <!-- Personel Maaşı Ödemesi -->
+    <Entry>
+        <entryNumber>000004</entryNumber>
+        <enteredDate>2024-01-15</enteredDate>
+        <documentType>voucher</documentType>
+        <documentNumber>PRS12345</documentNumber>
+        <documentDate>2024-01-15</documentDate>
+        <line>
+            <accountCode>770.01</accountCode>
+            <description>Personel Giderleri</description>
+            <debitAmount>30,000.00</debitAmount>
+            <creditAmount>0.00</creditAmount>
+        </line>
+        <line>
+            <accountCode>102</accountCode>
+            <description>Banka Hesapları</description>
+            <debitAmount>0.00</debitAmount>
+            <creditAmount>30,000.00</creditAmount>
+        </line>
+    </Entry>
+    
+    <!-- Gelecek Dönem Gideri Kaydı -->
+    <Entry>
+        <entryNumber>000005</entryNumber>
+        <enteredDate>2024-01-20</enteredDate>
+        <documentType>other</documentType>
+        <documentNumber>GDG12345</documentNumber>
+        <documentDate>2024-01-20</documentDate>
+        <line>
+            <accountCode>180</accountCode>
+            <description>Gelecek Aylara Ait Giderler</description>
+            <debitAmount>5,000.00</debitAmount>
+            <creditAmount>0.00</creditAmount>
+        </line>
+        <line>
+            <accountCode>770</accountCode>
+            <description>Genel Yönetim Giderleri</description>
+            <debitAmount>0.00</debitAmount>
+            <creditAmount>5,000.00</creditAmount>
+        </line>
+    </Entry>
+    
+    <!-- Dövizli Alacak Tahsili -->
+    <Entry>
+        <entryNumber>000006</entryNumber>
+        <enteredDate>2024-01-25</enteredDate>
+        <documentType>check</documentType>
+        <documentNumber>FX123456</documentNumber>
+        <documentDate>2024-01-25</documentDate>
+        <line>
+            <accountCode>100</accountCode>
+            <description>Kasa (TL Karşılığı)</description>
+            <debitAmount>20,000.00</debitAmount>
+            <creditAmount>0.00</creditAmount>
+        </line>
+        <line>
+            <accountCode>120</accountCode>
+            <description>Alıcılar</description>
+            <debitAmount>0.00</debitAmount>
+            <creditAmount>20,000.00</creditAmount>
+        </line>
+    </Entry>
+    
+    <!-- Gelecek Dönem Geliri Kaydı -->
+    <Entry>
+        <entryNumber>000007</entryNumber>
+        <enteredDate>2024-01-30</enteredDate>
+        <documentType>other</documentType>
+        <documentNumber>GG123456</documentNumber>
+        <documentDate>2024-01-30</documentDate>
+        <line>
+            <accountCode>380</accountCode>
+            <description>Gelecek Aylara Ait Gelirler</description>
+            <debitAmount>0.00</debitAmount>
+            <creditAmount>10,000.00</creditAmount>
+        </line>
+        <line>
+            <accountCode>600</accountCode>
+            <description>Yurtiçi Satışlar</description>
+            <debitAmount>10,000.00</debitAmount>
+            <creditAmount>0.00</creditAmount>
+        </line>
+    </Entry>
+</Journal>

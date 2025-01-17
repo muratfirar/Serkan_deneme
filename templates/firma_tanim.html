@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Firma Tanımlama{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900">Firma Tanımlama</h2>
+        <a href="{{ url_for('firma_listesi') }}" 
+           class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl 
+                  text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+            <i class="fas fa-list mr-2"></i>
+            Firma Listesi
+        </a>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
+        <form method="POST" class="p-8 space-y-6">
+            <!-- Temel Bilgiler -->
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">
+                        Firma Türü <span class="text-red-500">*</span>
+                    </label>
+                    <select name="firma_turu" required id="firmaTuru"
+                            class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="">Seçiniz...</option>
+                        {% for value, label in firma_turleri %}
+                        <option value="{{ value }}" {% if firma and firma.firma_turu == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Firma Ünvanı <span class="text-red-500">*</span></label>
+                    <input type="text" name="unvan" required
+                           class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                           placeholder="Firma ünvanını giriniz">
+                    <p class="mt-1 text-xs text-gray-500">Firma ünvanı zorunlu alandır</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" id="vergiNoLabel">
+                        Vergi Numarası <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" name="vergi_no" id="vergiNo" required
+                           maxlength="10" pattern="\d{10}"
+                           class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                           placeholder="Vergi numarasını giriniz">
+                    <p class="mt-1 text-xs text-gray-500" id="vergiNoHelp">10 haneli vergi numarası giriniz</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Vergi Dairesi</label>
+                    <input type="text" name="vergi_dairesi"
+                           class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Telefon</label>
+                <input type="tel" name="telefon"
+                       class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">E-posta</label>
+                <input type="email" name="email"
+                       class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Adres</label>
+                <textarea name="adres" rows="3"
+                          class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+            </div>
+
+            <!-- Yetkili Bilgileri -->
+            <div class="border-t pt-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Yetkili Bilgileri</h3>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Yetkili Adı</label>
+                        <input type="text" name="yetkili_adi"
+                               class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Yetkili Telefon</label>
+                        <input type="tel" name="yetkili_telefon"
+                               class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Açıklama</label>
+                <textarea name="aciklama" rows="3"
+                          class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+            </div>
+
+            <div class="flex justify-end space-x-4">
+                <button type="reset" 
+                        class="px-6 py-2 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Temizle
+                </button>
+                <button type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700">
+                    Kaydet
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+document.getElementById('firmaTuru').addEventListener('change', function() {
+    const vergiNoInput = document.getElementById('vergiNo');
+    const vergiNoLabel = document.getElementById('vergiNoLabel');
+    const vergiNoHelp = document.getElementById('vergiNoHelp');
+    
+    if (this.value === 'SAHIS') {
+        vergiNoLabel.textContent = 'T.C. Kimlik Numarası';
+        vergiNoInput.pattern = '\\d{11}';
+        vergiNoInput.maxLength = 11;
+        vergiNoHelp.textContent = '11 haneli TC Kimlik numarası giriniz';
+    } else {
+        vergiNoLabel.textContent = 'Vergi Numarası';
+        vergiNoInput.pattern = '\\d{10}';
+        vergiNoInput.maxLength = 10;
+        vergiNoHelp.textContent = '10 haneli vergi numarası giriniz';
+    }
+});
+</script>
+{% endblock %} 

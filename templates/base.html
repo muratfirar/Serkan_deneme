@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Muhasebe Analiz{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/dist/index.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Modern stil ve animasyonlar */
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+        
+        /* Modern scroll bar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex">
+        <!-- Sidebar -->
+        <nav class="w-64 bg-white shadow-lg rounded-r-2xl">
+            <div class="h-full flex flex-col">
+                <div class="flex-1 flex flex-col pt-8 pb-4 overflow-y-auto">
+                    <div class="flex items-center flex-shrink-0 px-6">
+                        <h1 class="text-2xl font-bold text-gray-900">Muhasebe Analiz</h1>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <nav class="mt-8 flex-1 px-4 space-y-2">
+                        <a href="{{ url_for('index') }}"
+                           class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl
+                                  {% if request.endpoint == 'index' %}
+                                    bg-blue-50 text-blue-700
+                                  {% else %}
+                                    text-gray-700 hover:bg-gray-50 hover:text-gray-900
+                                  {% endif %}">
+                            <span class="mr-3">
+                                <i class="fas fa-home text-lg {% if request.endpoint == 'index' %}text-blue-500{% endif %}"></i>
+                            </span>
+                            Ana Sayfa
+                        </a>
+                        
+                        <a href="{{ url_for('veri_girisi') }}"
+                           class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl
+                                  {% if request.endpoint == 'veri_girisi' %}
+                                    bg-blue-50 text-blue-700
+                                  {% else %}
+                                    text-gray-700 hover:bg-gray-50 hover:text-gray-900
+                                  {% endif %}">
+                            <span class="mr-3">
+                                <i class="fas fa-upload text-lg {% if request.endpoint == 'veri_girisi' %}text-blue-500{% endif %}"></i>
+                            </span>
+                            Veri Girişi
+                        </a>
+                        
+                        <a href="{{ url_for('mizan') }}"
+                           class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl
+                                  {% if request.endpoint == 'mizan' %}
+                                    bg-blue-50 text-blue-700
+                                  {% else %}
+                                    text-gray-700 hover:bg-gray-50 hover:text-gray-900
+                                  {% endif %}">
+                            <span class="mr-3">
+                                <i class="fas fa-table text-lg {% if request.endpoint == 'mizan' %}text-blue-500{% endif %}"></i>
+                            </span>
+                            Mizan
+                        </a>
+                        
+                        <a href="{{ url_for('bilanco') }}"
+                           class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl
+                                  {% if request.endpoint == 'bilanco' %}
+                                    bg-blue-50 text-blue-700
+                                  {% else %}
+                                    text-gray-700 hover:bg-gray-50 hover:text-gray-900
+                                  {% endif %}">
+                            <span class="mr-3">
+                                <i class="fas fa-balance-scale text-lg {% if request.endpoint == 'bilanco' %}text-blue-500{% endif %}"></i>
+                            </span>
+                            Bilanço
+                        </a>
+                        
+                        <a href="{{ url_for('fisler') }}"
+                           class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl
+                                  {% if request.endpoint == 'fisler' %}
+                                    bg-blue-50 text-blue-700
+                                  {% else %}
+                                    text-gray-700 hover:bg-gray-50 hover:text-gray-900
+                                  {% endif %}">
+                            <span class="mr-3">
+                                <i class="fas fa-receipt text-lg {% if request.endpoint == 'fisler' %}text-blue-500{% endif %}"></i>
+                            </span>
+                            Muhasebe Fişleri
+                        </a>
+                    </nav>
+
+                    <div class="mt-8">
+                        <h3 class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Firma Yönetimi
+                        </h3>
+                        <nav class="mt-2 space-y-2">
+                            <a href="{{ url_for('firma_tanim') }}"
+                               class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl
+                                      {% if request.endpoint == 'firma_tanim' %}
+                                        bg-blue-50 text-blue-700
+                                      {% else %}
+                                        text-gray-700 hover:bg-gray-50 hover:text-gray-900
+                                      {% endif %}">
+                                <span class="mr-3">
+                                    <i class="fas fa-building text-lg {% if request.endpoint == 'firma_tanim' %}text-blue-500{% endif %}"></i>
+                                </span>
+                                Firma Tanımlama
+                            </a>
+                            
+                            <a href="{{ url_for('firma_listesi') }}"
+                               class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl
+                                      {% if request.endpoint == 'firma_listesi' %}
+                                        bg-blue-50 text-blue-700
+                                      {% else %}
+                                        text-gray-700 hover:bg-gray-50 hover:text-gray-900
+                                      {% endif %}">
+                                <span class="mr-3">
+                                    <i class="fas fa-list-alt text-lg {% if request.endpoint == 'firma_listesi' %}text-blue-500{% endif %}"></i>
+                                </span>
+                                Firma Listesi
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <div class="flex-1">
+            <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
+                <div class="py-8">
+                    <div class="max-w-7xl mx-auto px-6 sm:px-8 md:px-10">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    {% block javascript %}{% endblock %}
+</body>
+</html> 

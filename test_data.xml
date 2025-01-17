@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AccountingData>
+    <CompanyInfo>
+        <CompanyName>Test Şirketi A.Ş.</CompanyName>
+        <TaxNumber>1234567890</TaxNumber>
+        <FiscalYearStart>2024-01-01</FiscalYearStart>
+        <FiscalYearEnd>2024-12-31</FiscalYearEnd>
+    </CompanyInfo>
+    <Entry>
+        <EntryNumber>1</EntryNumber>
+        <EntryComment>Test Fişi</EntryComment>
+        <EnteredDate>2024-01-01</EnteredDate>
+        <Line>
+            <AccountMainID>100</AccountMainID>
+            <AccountMainDescription>KASA</AccountMainDescription>
+            <Amount>1000.00</Amount>
+            <DebitCreditCode>D</DebitCreditCode>
+        </Line>
+        <Line>
+            <AccountMainID>320</AccountMainID>
+            <AccountMainDescription>SATICILAR</AccountMainDescription>
+            <Amount>1000.00</Amount>
+            <DebitCreditCode>C</DebitCreditCode>
+        </Line>
+    </Entry>
+</AccountingData> 

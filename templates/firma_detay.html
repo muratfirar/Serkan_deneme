@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block title %}{{ firma.unvan }} - Detay{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Üst Bilgi Kartı -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl shadow-xl">
+        <div class="px-8 py-6">
+            <div class="flex justify-between items-start">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="h-16 w-16 bg-white rounded-xl flex items-center justify-center">
+                            <i class="fas fa-building text-3xl text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold text-white">{{ firma.unvan }}</h1>
+                            <span class="text-blue-200">{{ firma.firma_turu_adi }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="{{ url_for('firma_duzenle', id=firma.id) }}" 
+                       class="px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-xl text-white 
+                              flex items-center space-x-2 transition duration-200">
+                        <i class="fas fa-edit"></i>
+                        <span>Düzenle</span>
+                    </a>
+                    {% if firma.durum %}
+                    <span class="px-4 py-2 bg-green-500 rounded-xl text-white flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        Aktif
+                    </span>
+                    {% else %}
+                    <span class="px-4 py-2 bg-red-500 rounded-xl text-white flex items-center">
+                        <i class="fas fa-times-circle mr-2"></i>
+                        Pasif
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Bilgi Kartları -->
+            <div class="grid grid-cols-4 gap-6 mt-8">
+                <div class="bg-white bg-opacity-10 rounded-xl p-4 text-white">
+                    <div class="text-sm text-blue-200">Vergi/TC No</div>
+                    <div class="text-lg font-semibold mt-1">{{ firma.vergi_no }}</div>
+                    <div class="text-sm text-blue-200 mt-1">{{ firma.vergi_dairesi }}</div>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-xl p-4 text-white">
+                    <div class="text-sm text-blue-200">Telefon</div>
+                    <div class="text-lg font-semibold mt-1">{{ firma.telefon or '-' }}</div>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-xl p-4 text-white">
+                    <div class="text-sm text-blue-200">E-posta</div>
+                    <div class="text-lg font-semibold mt-1">{{ firma.email or '-' }}</div>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-xl p-4 text-white">
+                    <div class="text-sm text-blue-200">Kayıt Tarihi</div>
+                    <div class="text-lg font-semibold mt-1">{{ firma.olusturma_tarihi.strftime('%d.%m.%Y') }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Menüsü -->
+    <div class="bg-white shadow-lg rounded-2xl">
+        <div class="border-b border-gray-200">
+            <nav class="flex">
+                <button onclick="showTab('veri-girisi')"
+                        class="tab-button relative min-w-0 flex-1 overflow-hidden py-4 px-4 text-center 
+                               text-sm font-medium hover:bg-gray-50 focus:z-10 focus:outline-none
+                               active-tab">
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-upload mr-2"></i>
+                        <span>Veri Girişi</span>
+                    </div>
+                </button>
+                <button onclick="showTab('mizan')"
+                        class="tab-button relative min-w-0 flex-1 overflow-hidden py-4 px-4 text-center 
+                               text-sm font-medium hover:bg-gray-50 focus:z-10 focus:outline-none">
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-table mr-2"></i>
+                        <span>Mizan</span>
+                    </div>
+                </button>
+                <button onclick="showTab('bilanco')"
+                        class="tab-button relative min-w-0 flex-1 overflow-hidden py-4 px-4 text-center 
+                               text-sm font-medium hover:bg-gray-50 focus:z-10 focus:outline-none">
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-balance-scale mr-2"></i>
+                        <span>Bilanço</span>
+                    </div>
+                </button>
+                <button onclick="showTab('fisler')"
+                        class="tab-button relative min-w-0 flex-1 overflow-hidden py-4 px-4 text-center 
+                               text-sm font-medium hover:bg-gray-50 focus:z-10 focus:outline-none">
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-receipt mr-2"></i>
+                        <span>Muhasebe Fişleri</span>
+                    </div>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Tab İçerikleri -->
+        <div class="p-6">
+            <div id="veri-girisi" class="tab-content">
+                <form id="uploadForm" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="space-y-6">
+                    <input type="hidden" name="firma_id" value="{{ firma.id }}">
+                    <div class="flex items-center justify-center w-full">
+                        <label class="flex flex-col w-full h-48 border-2 border-dashed border-gray-300 rounded-xl 
+                                    hover:bg-gray-50 hover:border-blue-500 transition-all cursor-pointer">
+                            <div class="flex flex-col items-center justify-center pt-7">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                                <p class="text-sm text-gray-600">XML dosyalarını sürükleyin veya seçin</p>
+                                <p class="text-xs text-gray-500 mt-2">Birden fazla XML dosyası seçebilirsiniz</p>
+                            </div>
+                            <input type="file" id="fileInput" name="files[]" class="hidden" accept=".xml" multiple required>
+                        </label>
+                    </div>
+                    <div id="fileList" class="hidden space-y-2">
+                        <h3 class="text-sm font-medium text-gray-700">Seçilen Dosyalar:</h3>
+                        <ul id="selectedFiles" class="divide-y divide-gray-200"></ul>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" id="submitButton" disabled
+                                class="inline-flex items-center px-6 py-3 border border-transparent text-base 
+                                       font-medium rounded-xl shadow-sm text-white bg-blue-600 hover:bg-blue-700 
+                                       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                                       disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fas fa-upload mr-2"></i>
+                            Dosyaları Yükle
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="mizan" class="tab-content hidden">
+                {% if periods %}
+                    {% for period_num, period_data in periods.items() %}
+                        {% include 'mizan_partial.html' %}
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-12">
+                        <p class="text-gray-500">Henüz veri yüklenmemiş</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div id="bilanco" class="tab-content hidden">
+                {% if periods %}
+                    {% include 'bilanco_partial.html' %}
+                {% else %}
+                    <div class="text-center py-12">
+                        <p class="text-gray-500">Henüz veri yüklenmemiş</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div id="fisler" class="tab-content hidden">
+                {% if periods %}
+                    {% include 'fisler_partial.html' %}
+                {% else %}
+                    <div class="text-center py-12">
+                        <p class="text-gray-500">Henüz veri yüklenmemiş</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+// Tab değiştirme fonksiyonu
+function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active-tab');
+    });
+    
+    document.getElementById(tabId).classList.remove('hidden');
+    document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active-tab');
+}
+
+// Dosya yükleme işlemleri
+const fileInput = document.getElementById('fileInput');
+const fileList = document.getElementById('fileList');
+const selectedFiles = document.getElementById('selectedFiles');
+const submitButton = document.getElementById('submitButton');
+
+fileInput.addEventListener('change', updateFileList);
+
+function updateFileList() {
+    const files = fileInput.files;
+    
+    if (files.length > 0) {
+        fileList.classList.remove('hidden');
+        selectedFiles.innerHTML = '';
+        
+        Array.from(files).forEach((file, index) => {
+            const li = document.createElement('li');
+            li.className = 'py-3 flex justify-between items-center';
+            li.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-file-code text-blue-500 mr-3"></i>
+                    <span class="text-sm text-gray-900">${file.name}</span>
+                    <span class="ml-2 text-xs text-gray-500">(${formatFileSize(file.size)})</span>
+                </div>
+                <button type="button" onclick="removeFile(${index})" 
+                        class="text-red-400 hover:text-red-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            selectedFiles.appendChild(li);
+        });
+        
+        submitButton.disabled = false;
+    } else {
+        fileList.classList.add('hidden');
+        submitButton.disabled = true;
+    }
+}
+
+function removeFile(index) {
+    const dt = new DataTransfer();
+    const files = fileInput.files;
+    
+    for (let i = 0; i < files.length; i++) {
+        if (i !== index) {
+            dt.items.add(files[i]);
+        }
+    }
+    
+    fileInput.files = dt.files;
+    updateFileList();
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+</script>
+
+<style>
+.active-tab {
+    color: #2563eb;
+    border-bottom: 2px solid #2563eb;
+    background-color: #f8fafc;
+}
+
+.tab-button {
+    border-bottom: 2px solid transparent;
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Veri Girişi{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <div class="flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900">Veri Girişi</h2>
+            <p class="mt-1 text-sm text-gray-500">XML formatında muhasebe verilerinizi yükleyin</p>
+        </div>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
+        <div class="p-8">
+            <form id="uploadForm" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="space-y-6">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-center w-full">
+                        <label class="flex flex-col w-full h-48 border-2 border-dashed border-gray-300 rounded-xl 
+                                    hover:bg-gray-50 hover:border-blue-500 transition-all cursor-pointer">
+                            <div class="flex flex-col items-center justify-center pt-7">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                                <p class="text-sm text-gray-600">XML dosyalarını sürükleyin veya seçin</p>
+                                <p class="text-xs text-gray-500 mt-2">Birden fazla XML dosyası seçebilirsiniz</p>
+                            </div>
+                            <input type="file" id="fileInput" name="files[]" class="hidden" 
+                                   accept=".xml" multiple required>
+                        </label>
+                    </div>
+                    
+                    <!-- Seçilen Dosyalar Listesi -->
+                    <div id="fileList" class="space-y-2 hidden">
+                        <h3 class="text-sm font-medium text-gray-700">Seçilen Dosyalar:</h3>
+                        <ul class="divide-y divide-gray-200" id="selectedFiles">
+                            <!-- JavaScript ile doldurulacak -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bilgi Kutusu -->
+                <div class="bg-blue-50 rounded-xl p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-blue-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-blue-800">Bilgi</h3>
+                            <div class="mt-2 text-sm text-blue-700">
+                                <ul class="list-disc pl-5 space-y-1">
+                                    <li>Sadece XML formatında dosyalar kabul edilmektedir</li>
+                                    <li>Dönem bilgileri XML dosyalarından otomatik alınacaktır</li>
+                                    <li>En fazla {{ max_periods }} dönem verisi yükleyebilirsiniz</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Yükleme Butonu -->
+                <div class="flex justify-end">
+                    <button type="submit" id="submitButton" disabled
+                            class="inline-flex items-center px-6 py-3 border border-transparent text-base 
+                                   font-medium rounded-xl shadow-sm text-white bg-blue-600 hover:bg-blue-700 
+                                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                                   disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-upload mr-2"></i>
+                        Dosyaları Yükle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+const fileInput = document.getElementById('fileInput');
+const fileList = document.getElementById('fileList');
+const selectedFiles = document.getElementById('selectedFiles');
+const submitButton = document.getElementById('submitButton');
+const maxPeriods = {{ max_periods }};
+
+fileInput.addEventListener('change', updateFileList);
+
+// Drag and drop işlemleri
+const dropZone = document.querySelector('label');
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, preventDefaults, false);
+});
+
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+['dragenter', 'dragover'].forEach(eventName => {
+    dropZone.addEventListener(eventName, highlight, false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, unhighlight, false);
+});
+
+function highlight(e) {
+    dropZone.classList.add('border-blue-500', 'bg-blue-50');
+}
+
+function unhighlight(e) {
+    dropZone.classList.remove('border-blue-500', 'bg-blue-50');
+}
+
+dropZone.addEventListener('drop', handleDrop, false);
+
+function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    fileInput.files = files;
+    updateFileList();
+}
+
+function updateFileList() {
+    const files = fileInput.files;
+    
+    if (files.length > 0) {
+        fileList.classList.remove('hidden');
+        selectedFiles.innerHTML = '';
+        
+        Array.from(files).forEach((file, index) => {
+            const li = document.createElement('li');
+            li.className = 'py-3 flex justify-between items-center';
+            li.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-file-code text-blue-500 mr-3"></i>
+                    <span class="text-sm text-gray-900">${file.name}</span>
+                    <span class="ml-2 text-xs text-gray-500">(${formatFileSize(file.size)})</span>
+                </div>
+                <button type="button" onclick="removeFile(${index})" 
+                        class="text-red-400 hover:text-red-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            selectedFiles.appendChild(li);
+        });
+        
+        submitButton.disabled = files.length === 0 || files.length > maxPeriods;
+    } else {
+        fileList.classList.add('hidden');
+        submitButton.disabled = true;
+    }
+}
+
+function removeFile(index) {
+    const dt = new DataTransfer();
+    const files = fileInput.files;
+    
+    for (let i = 0; i < files.length; i++) {
+        if (i !== index) {
+            dt.items.add(files[i]);
+        }
+    }
+    
+    fileInput.files = dt.files;
+    updateFileList();
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+</script>
+{% endblock %} 

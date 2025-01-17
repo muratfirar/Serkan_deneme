@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Mizan{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    {% if periods %}
+        {% for period_num, period_data in periods.items() %}
+        <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-bold text-gray-900">{{ period_num }}. Dönem Mizanı</h2>
+            <span class="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                {{ period_data.donem_sonu }} tarihi itibariyle
+            </span>
+        </div>
+        
+        <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50">
+                                Hesap Kodu
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Hesap Adı
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Borç
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Alacak
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Borç Bakiye
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Alacak Bakiye
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for hesap in period_data.mizan %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 sticky left-0 bg-white">
+                                {{ hesap.hesap_kodu }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ hesap.hesap_adi }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ hesap.borc|para_format }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ hesap.alacak|para_format }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ hesap.borc_bakiye|para_format }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ hesap.alacak_bakiye|para_format }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <!-- Toplam satırı -->
+                        <tr class="bg-gray-50 font-medium">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 sticky left-0 bg-gray-50" colspan="2">
+                                TOPLAM
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ period_data.toplam.borc|para_format }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ period_data.toplam.alacak|para_format }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ period_data.toplam.borc_bakiye|para_format }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ period_data.toplam.alacak_bakiye|para_format }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="text-center py-12">
+        <p class="text-gray-500">Henüz hiç veri yüklenmemiş</p>
+        <a href="{{ url_for('veri_girisi') }}" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent 
+                  text-sm font-medium rounded-xl shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+            Veri Girişi Yap
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Muhasebe Analiz - Ana Sayfa{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Hoş Geldiniz Kartı -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-6 py-8 border-b border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800">Muhasebe Analiz Sistemine Hoş Geldiniz</h2>
+            <p class="mt-2 text-gray-600">Bu sistem ile muhasebe verilerinizi analiz edebilir ve raporlar oluşturabilirsiniz.</p>
+        </div>
+    </div>
+
+    <!-- Özellikler Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Veri Girişi Kartı -->
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
+                    <i class="fas fa-upload text-blue-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Veri Girişi</h3>
+                <p class="mt-2 text-gray-600">3 döneme kadar XML, PDF ve Excel formatında veri yükleyebilirsiniz.</p>
+                <a href="{{ url_for('veri_girisi') }}" 
+                   class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-700">
+                    Veri Yükle
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mizan Kartı -->
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg mb-4">
+                    <i class="fas fa-table text-green-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Mizan</h3>
+                <p class="mt-2 text-gray-600">Detaylı mizan raporları oluşturun ve analiz edin.</p>
+                <a href="{{ url_for('mizan') }}" 
+                   class="mt-4 inline-flex items-center text-green-600 hover:text-green-700">
+                    Mizanı Görüntüle
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Karşılaştırmalı Analiz Kartı -->
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg mb-4">
+                    <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Karşılaştırmalı Analiz</h3>
+                <p class="mt-2 text-gray-600">Dönemler arası karşılaştırma ve finansal analizler yapın.</p>
+                <a href="{{ url_for('karsilastirmali_analiz') }}" 
+                   class="mt-4 inline-flex items-center text-purple-600 hover:text-purple-700">
+                    Analiz Yap
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Muhasebe Fişleri Kartı -->
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-center w-12 h-12 bg-orange-100 rounded-lg mb-4">
+                    <i class="fas fa-file-alt text-orange-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Muhasebe Fişleri</h3>
+                <p class="mt-2 text-gray-600">Tüm muhasebe fişlerinizi görüntüleyin ve filtreleyerek arayın.</p>
+                <a href="{{ url_for('fisler') }}" 
+                   class="mt-4 inline-flex items-center text-orange-600 hover:text-orange-700">
+                    Fişleri Görüntüle
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Yakında Gelecek Özellikler -->
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg mb-4">
+                    <i class="fas fa-clock text-gray-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Yakında</h3>
+                <p class="mt-2 text-gray-600">
+                    - PDF beyanname desteği<br>
+                    - Excel mizan desteği<br>
+                    - Gelişmiş raporlama özellikleri
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alt Bilgi -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="text-center text-gray-600">
+            <p>Başlamak için "Veri Girişi" bölümünden XML dosyanızı yükleyin.</p>
+            <p class="text-sm mt-2">Destek ve önerileriniz için: <a href="mailto:destek@example.com" class="text-blue-600 hover:text-blue-700">destek@example.com</a></p>
+        </div>
+    </div>
+
+    <!-- Mevcut kartlardan sonra -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+        <div class="bg-white overflow-hidden shadow-lg rounded-2xl">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-blue-100 rounded-xl p-3">
+                        <i class="fas fa-building text-xl text-blue-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-medium text-gray-900">Firma Yönetimi</h3>
+                        <p class="mt-1 text-sm text-gray-500">
+                            Firma tanımlama ve listeleme işlemleri
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-6 grid grid-cols-2 gap-4">
+                    <a href="{{ url_for('firma_tanim') }}"
+                       class="inline-flex items-center justify-center px-4 py-2 border border-transparent 
+                              text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700">
+                        <i class="fas fa-plus mr-2"></i>
+                        Yeni Firma
+                    </a>
+                    <a href="{{ url_for('firma_listesi') }}"
+                       class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 
+                              text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-list mr-2"></i>
+                        Firma Listesi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}Firma Listesi{% endblock %}
+
+{% block content %}
+<div class="py-8">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900">Firma Listesi</h2>
+            <p class="mt-1 text-sm text-gray-500">Sistemde kayıtlı tüm firmalar</p>
+        </div>
+        <a href="{{ url_for('firma_tanim') }}" 
+           class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl 
+                  text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 shadow-sm">
+            <i class="fas fa-plus mr-2"></i>
+            Yeni Firma
+        </a>
+    </div>
+
+    <!-- Arama ve Filtreleme -->
+    <div class="bg-white p-4 rounded-xl shadow-sm mb-6">
+        <div class="flex gap-4">
+            <div class="flex-1">
+                <input type="text" placeholder="Firma ara..." id="searchInput"
+                       class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <select id="statusFilter" class="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                <option value="">Tüm Durumlar</option>
+                <option value="active">Aktif</option>
+                <option value="passive">Pasif</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Firma Listesi -->
+    <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Firma Bilgileri
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Vergi Bilgileri
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            İletişim
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Durum
+                        </th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            İşlemler
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for firma in firmalar %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-building text-blue-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <a href="{{ url_for('firma_detay', id=firma.id) }}" 
+                                       class="text-sm font-medium text-gray-900 hover:text-blue-600">
+                                        {{ firma.unvan }}
+                                    </a>
+                                    <div class="text-sm text-gray-500">{{ firma.firma_turu_adi }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900">{{ firma.vergi_no }}</div>
+                            <div class="text-sm text-gray-500">{{ firma.vergi_dairesi }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900">{{ firma.telefon }}</div>
+                            <div class="text-sm text-gray-500">{{ firma.email }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if firma.durum %}
+                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Aktif
+                            </span>
+                            {% else %}
+                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                Pasif
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right space-x-3">
+                            <a href="{{ url_for('firma_detay', id=firma.id) }}" 
+                               class="text-gray-400 hover:text-gray-500" title="Detay">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{{ url_for('firma_duzenle', id=firma.id) }}" 
+                               class="text-blue-400 hover:text-blue-500" title="Düzenle">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button onclick="firmaSil({{ firma.id }})"
+                                    class="text-red-400 hover:text-red-500" title="Sil">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Silme Modal -->
+<div id="silmeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-2xl p-8 max-w-md mx-auto">
+        <div class="text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                <i class="fas fa-exclamation-triangle text-red-600"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Firma Silinecek</h3>
+            <p class="text-sm text-gray-500 mb-6">
+                Bu firmayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
+            </p>
+        </div>
+        <div class="flex justify-end space-x-4">
+            <button onclick="modalKapat()"
+                    class="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50
+                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                İptal
+            </button>
+            <button onclick="silmeOnayla()"
+                    class="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-medium hover:bg-red-700
+                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                Sil
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+let silinecekFirmaId = null;
+
+// Arama ve filtreleme
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    const searchText = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchText) ? '' : 'none';
+    });
+});
+
+document.getElementById('statusFilter').addEventListener('change', function(e) {
+    const status = e.target.value;
+    const rows = document.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        if (!status) {
+            row.style.display = '';
+            return;
+        }
+        
+        const isActive = row.querySelector('.bg-green-100') !== null;
+        row.style.display = (status === 'active' && isActive) || (status === 'passive' && !isActive) ? '' : 'none';
+    });
+});
+
+function firmaSil(id) {
+    silinecekFirmaId = id;
+    document.getElementById('silmeModal').classList.remove('hidden');
+}
+
+function modalKapat() {
+    document.getElementById('silmeModal').classList.add('hidden');
+    silinecekFirmaId = null;
+}
+
+function silmeOnayla() {
+    if (silinecekFirmaId) {
+        fetch(`/firma-sil/${silinecekFirmaId}`, {
+            method: 'DELETE',
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }
+    modalKapat();
+}
+</script>
+{% endblock %} 

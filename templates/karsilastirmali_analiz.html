@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Karşılaştırmalı Analiz{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Karşılaştırmalı Mizan -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Karşılaştırmalı Mizan
+            </h3>
+        </div>
+        
+        {% if periods and periods.values()|list|length > 0 %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50">
+                            Hesap Kodu ve Adı
+                        </th>
+                        {% for period_num, period_data in periods.items() %}
+                        <th scope="col" colspan="4" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {{ period_num }}. Dönem
+                        </th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th scope="col" class="sticky left-0 bg-gray-50"></th>
+                        {% for period_num in periods %}
+                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Borç
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Alacak
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Borç Bakiye
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Alacak Bakiye
+                        </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% set first_period = periods.values()|list|first %}
+                    {% if first_period and first_period.mizan %}
+                        {% for hesap in first_period.mizan %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 sticky left-0 bg-white">
+                                {{ hesap.hesap_kodu }} - {{ hesap.hesap_adi }}
+                            </td>
+                            {% for period_num, period_data in periods.items() %}
+                            {% set period_hesap = period_data.mizan|selectattr("hesap_kodu", "equalto", hesap.hesap_kodu)|first %}
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ period_hesap.borc|para_format }}
+                            </td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ period_hesap.alacak|para_format }}
+                            </td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ period_hesap.borc_bakiye|para_format }}
+                            </td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                                {{ period_hesap.alacak_bakiye|para_format }}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+                <tfoot class="bg-gray-50">
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 sticky left-0 bg-gray-50">
+                            TOPLAM
+                        </td>
+                        {% for period_num, period_data in periods.items() %}
+                        <td class="px-3 py-4 whitespace-nowrap text-sm font-medium text-right text-gray-900">
+                            {{ period_data.toplam.borc|para_format }}
+                        </td>
+                        <td class="px-3 py-4 whitespace-nowrap text-sm font-medium text-right text-gray-900">
+                            {{ period_data.toplam.alacak|para_format }}
+                        </td>
+                        <td class="px-3 py-4 whitespace-nowrap text-sm font-medium text-right text-gray-900">
+                            {{ period_data.toplam.borc_bakiye|para_format }}
+                        </td>
+                        <td class="px-3 py-4 whitespace-nowrap text-sm font-medium text-right text-gray-900">
+                            {{ period_data.toplam.alacak_bakiye|para_format }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-12">
+            <p class="text-sm text-gray-500">Henüz hiçbir dönem verisi yüklenmemiş.</p>
+            <a href="{{ url_for('veri_girisi') }}" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                Veri Girişi Yap
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollContainer = document.querySelector('.overflow-x-auto');
+    if (scrollContainer) {
+        // Tablo scroll pozisyonunu kaydet
+        scrollContainer.addEventListener('scroll', function(e) {
+            localStorage.setItem('scrollX', e.target.scrollLeft);
+        });
+
+        // Scroll pozisyonunu geri yükle
+        const scrollX = localStorage.getItem('scrollX');
+        if (scrollX) {
+            scrollContainer.scrollLeft = scrollX;
+        }
+    }
+});
+</script>
+{% endblock %}
+{% endblock %} 

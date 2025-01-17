@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AccountingData>
+  <FiscalPeriod>
+    <FiscalYearStart>2023-12-01</FiscalYearStart>
+    <FiscalYearEnd>2023-12-31</FiscalYearEnd>
+  </FiscalPeriod>
+  <Entries>
+    <!-- İlk İşlem -->
+    <Entry>
+      <Header>
+        <EnteredBy>AYŞE YILMAZ</EnteredBy>
+        <EnteredDate>2023-01-10</EnteredDate>
+        <EntryNumber>0000012345</EntryNumber>
+        <EntryComment>OFİS MALZEMESİ ALIMI</EntryComment>
+        <TotalDebit>1500.00</TotalDebit>
+        <TotalCredit>1500.00</TotalCredit>
+        <EntryNumberCounter>1</EntryNumberCounter>
+      </Header>
+      <Lines>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <AccountMainID>740</AccountMainID>
+          <AccountMainDescription>Hizmet Üretim Maliyeti</AccountMainDescription>
+          <AccountSubID>740.4300050</AccountSubID>
+          <AccountSubDescription>OFİS MALZEMELERİ</AccountSubDescription>
+          <Amount>1500.00</Amount>
+          <DebitCreditCode>D</DebitCreditCode>
+          <PostingDate>2023-01-10</PostingDate>
+          <DocumentType>invoice</DocumentType>
+          <DocumentNumber>INV123</DocumentNumber>
+          <DocumentReference>0000012345</DocumentReference>
+          <DocumentDate>2023-01-10</DocumentDate>
+          <DetailComment>KIRTASİYE ÜRÜNLERİ</DetailComment>
+        </Line>
+        <Line>
+          <LineNumber>2</LineNumber>
+          <AccountMainID>320</AccountMainID>
+          <AccountMainDescription>Satıcılar</AccountMainDescription>
+          <AccountSubID>320.0100010</AccountSubID>
+          <AccountSubDescription>ABC KIRTASİYE</AccountSubDescription>
+          <Amount>1500.00</Amount>
+          <DebitCreditCode>C</DebitCreditCode>
+          <PostingDate>2023-01-10</PostingDate>
+          <DocumentType>invoice</DocumentType>
+          <DocumentNumber>INV123</DocumentNumber>
+          <DocumentReference>0000012345</DocumentReference>
+          <DocumentDate>2023-01-10</DocumentDate>
+        </Line>
+      </Lines>
+    </Entry>
+    <!-- İkinci İşlem -->
+    <Entry>
+      <Header>
+        <EnteredBy>AYŞE YILMAZ</EnteredBy>
+        <EnteredDate>2023-01-15</EnteredDate>
+        <EntryNumber>0000012346</EntryNumber>
+        <EntryComment>ELEKTRİK GİDERİ</EntryComment>
+        <TotalDebit>2000.00</TotalDebit>
+        <TotalCredit>2000.00</TotalCredit>
+        <EntryNumberCounter>2</EntryNumberCounter>
+      </Header>
+      <Lines>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <AccountMainID>770</AccountMainID>
+          <AccountMainDescription>Genel Yönetim Giderleri</AccountMainDescription>
+          <AccountSubID>770.9000005</AccountSubID>
+          <AccountSubDescription>ELEKTRİK GİDERLERİ</AccountSubDescription>
+          <Amount>2000.00</Amount>
+          <DebitCreditCode>D</DebitCreditCode>
+          <PostingDate>2023-01-15</PostingDate>
+          <DocumentType>invoice</DocumentType>
+          <DocumentNumber>ELEKTRIK2023</DocumentNumber>
+          <DocumentReference>0000012346</DocumentReference>
+          <DocumentDate>2023-01-15</DocumentDate>
+          <DetailComment>OCAK AYI ELEKTRİK FATURASI</DetailComment>
+        </Line>
+        <Line>
+          <LineNumber>2</LineNumber>
+          <AccountMainID>100</AccountMainID>
+          <AccountMainDescription>Kasa</AccountMainDescription>
+          <AccountSubID>100.1000010</AccountSubID>
+          <AccountSubDescription>MERKEZ KASA</AccountSubDescription>
+          <Amount>2000.00</Amount>
+          <DebitCreditCode>C</DebitCreditCode>
+          <PostingDate>2023-01-15</PostingDate>
+          <DocumentType>invoice</DocumentType>
+          <DocumentNumber>ELEKTRIK2023</DocumentNumber>
+          <DocumentReference>0000012346</DocumentReference>
+          <DocumentDate>2023-01-15</DocumentDate>
+        </Line>
+      </Lines>
+    </Entry>
+    <!-- Üçüncü İşlem -->
+    <Entry>
+      <Header>
+        <EnteredBy>AYŞE YILMAZ</EnteredBy>
+        <EnteredDate>2023-01-20</EnteredDate>
+        <EntryNumber>0000012347</EntryNumber>
+        <EntryComment>MÜŞTERİ TAHSİLAT</EntryComment>
+        <TotalDebit>5000.00</TotalDebit>
+        <TotalCredit>5000.00</TotalCredit>
+        <EntryNumberCounter>3</EntryNumberCounter>
+      </Header>
+      <Lines>
+        <Line>
+          <LineNumber>1</LineNumber>
+          <AccountMainID>100</AccountMainID>
+          <AccountMainDescription>Kasa</AccountMainDescription>
+          <AccountSubID>100.1000020</AccountSubID>
+          <AccountSubDescription>ŞUBE KASA</AccountSubDescription>
+          <Amount>5000.00</Amount>
+          <DebitCreditCode>D</DebitCreditCode>
+          <PostingDate>2023-01-20</PostingDate>
+          <DocumentType>receipt</DocumentType>
+          <DocumentNumber>TAHSILAT2023</DocumentNumber>
+          <DocumentReference>0000012347</DocumentReference>
+          <DocumentDate>2023-01-20</DocumentDate>
+          <DetailComment>MÜŞTERİ TAHSİLAT BELGESİ</DetailComment>
+        </Line>
+        <Line>
+          <LineNumber>2</LineNumber>
+          <AccountMainID>120</AccountMainID>
+          <AccountMainDescription>Alıcılar</AccountMainDescription>
+          <AccountSubID>120.0100001</AccountSubID>
+          <AccountSubDescription>MEHMET A.Ş.</AccountSubDescription>
+          <Amount>5000.00</Amount>
+          <DebitCreditCode>C</DebitCreditCode>
+          <PostingDate>2023-01-20</PostingDate>
+          <DocumentType>receipt</DocumentType>
+          <DocumentNumber>TAHSILAT2023</DocumentNumber>
+          <DocumentReference>0000012347</DocumentReference>
+          <DocumentDate>2023-01-20</DocumentDate>
+        </Line>
+      </Lines>
+    </Entry>
+  </Entries>
+</AccountingData>
